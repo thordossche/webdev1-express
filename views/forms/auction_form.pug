@@ -1,0 +1,39 @@
+extends ../layout
+
+block content
+    h1=title
+
+    form(method='POST' action='' id='auction_form')
+        div.form-group
+            label(for='name') Auction name:
+            input#name.form-control(type='text' placeholder='Name your auction' name='name' required='true' value=(undefined===auction ? '' : auction.name) )
+            label(for='place') Place of Auction:
+            input#place.form-control(type='text' placeholder='e.g. Ghent' name='place' required='true' value=(undefined===auction ? '' : auction.place))
+        div.form-group
+            label Select organiser(s):
+                div(class="scrollable")
+                    for user in users
+                        br
+                        input.checkbox-input(type='checkbox', name='organisers', id=user._id, value=user._id, checked=user.checked )
+                        label(for=user._id) #{user.name}
+        div.form-group
+            label(for='start') Start of auction (MM-DD-YYYY):
+            input#start.form-control(type='date' name='start' required='true' value=(undefined===auction ? '' : moment(auction.start).format('YYYY-MM-DD')) )
+            label(for='end') End of auction (MM-DD-YYYY):
+            input#end.form-control(type='date' name='end' required='true' value=(undefined===auction ? '' : moment(auction.end).format('YYYY-MM-DD')) )
+        div.form-group
+            label(for='product_deadline') People can add products until (MM-DD-YYYY):
+            input#product_deadline.form-control(type='date' name='product_deadline' required='true' value=(undefined === auction ? '' : moment(auction.product_deadline).format('YYYY-MM-DD')) )
+            label(for='bid_deadline') People can add bids until (MM-DD-YYYY):
+            input#bid_deadline.form-control(type='date' name='bid_deadline' required='true' value=(undefined === auction ? '' : moment(auction.bid_deadline).format('YYYY-MM-DD')) )
+
+        if updating
+            a.btn.btn-primary(onclick='update("auction", \'' +  auction._id + '\')')  Submit
+        else
+            button.btn.btn-primary(type='submit') Submit
+
+    if errors
+        div.form-group
+            for error in errors
+                p(class="alert") #{error.msg}
+    div(id="error")

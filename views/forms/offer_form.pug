@@ -1,0 +1,19 @@
+extends ../layout
+
+block content
+    h1=title
+    form(method='POST' action='')
+        div.form-group
+            label Select buyer:
+            div.form-group
+                select(id="buyer", name="buyer")
+                    for user in users
+                        option(value=user._id) #{user.name}
+
+            label(for='bid') Amount you're offering:
+            input#bid.form-control(type='float' name='bid' placeholder='Place your bid.' required='true' value=(undefined===offer ? '' : offer.bid) )
+        button.btn.btn-primary(type='submit') Submit
+    if errors
+        div.form-group
+            for error in errors
+                p(class="alert") #{error.msg}

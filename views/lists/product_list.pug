@@ -1,0 +1,14 @@
+extends ../layout
+
+block content
+    h1= title
+
+    ul
+        each prooduct in product_list
+            li
+                a(href=product.url) #{product.name}
+                |  (#{product.seller.name})
+                |  $ #{product.start_price}
+
+        else
+            li There are no products.

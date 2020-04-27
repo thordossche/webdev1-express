@@ -1,0 +1,36 @@
+extends ../layout
+
+block content
+    h2 #{user.name}
+    p email: #{user.email}
+    a.btn.btn-warning(href=user.url + '/update') Update
+    =" "
+    a.btn.btn-danger(onclick = "deleteResource('user', '"+user._id+"')") Delete
+    hr
+    p #[strong Selling:]
+        if products && products.length > 0
+            each product in products
+                li
+                    a(href=product.url) #{product.name}
+                    |  (#{product.description})
+        else
+            p This user is not selling any products.
+
+    hr
+    p #[strong Bids placed:]
+        if offers && offers.length > 0
+            each offer in offers
+                li
+                    a(href=offer.product.url) #{offer.product.name}
+                    |  - offering: €#{offer.bid}
+        else
+            p This user is not buying any products.
+    hr
+    p #[strong Organizing:]
+        if auctions && auctions.length > 0
+            each auction in auctions
+                li
+                    a(href=auction.url) #{auction.name}
+                    |  (#{auction.running_time})
+        else
+            p This user is not organizing any auctions.

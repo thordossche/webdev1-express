@@ -1,0 +1,50 @@
+extends ../layout
+
+block content
+    h2 #{product.name}
+    p #[strong Seller: ]
+        a(href=product.seller.url) #{product.seller.name}
+    br
+    p #[strong Description: ] #{product.description}
+    br
+    p #[strong Start price: ] €#{product.start_price}
+
+    if !deadline.product_over
+        br
+        a.btn.btn-warning(href=product.url + '/update') update
+        // =" " nodig omdat | met twee spaties de spaties verliest door trimming van webstorm
+        =" "
+        a.btn.btn-danger(onclick='deleteResource(\'product\', \'' + product._id + '\')') delete
+    else
+        p(class="alert") Product deadline has been reached, changing details of the product is not allowed anymore.
+
+    hr
+
+    if !deadline.bid_over
+        p #[strong Current bids: ]
+        if !product.accepted
+            p Product hasn't been accepted by an organiser yet:
+            a.btn.btn-success(onclick='acceptProduct(\'' +  product._id + '\')') accept
+
+        else
+            if offers.length > 0
+                for offer in offers
+                    li #{offer.buyer.name} : €#{offer.bid}
+                        =" "
+                        if !deadline.bid_over
+                            a.btn.btn-secondary(onclick='deleteResource(\'offer\', \'' +  offer._id + '\', false)') delete
+            else
+                p No offers yet, be the first!
+            if !deadline.bid_over
+                br
+                a.btn.btn-primary(href='/offer/create/' + product._id) add offer
+    else
+        p #[strong Winning bid: ]
+            if offers.length > 0
+                #{offers[0].buyer.name} : €#{offers[0].bid} by
+                    a(href= offers[0].buyer.url)  #{offers[0].buyer.name}
+            else
+                | There were no bids on this product.
+
+    hr
+    a.btn.btn-info(href=auction.url) return to auction

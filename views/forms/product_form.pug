@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+    h1=title
+    form(method='POST' action='' id='product_form')
+        div.form-group
+            label(for='name') Name:
+            input#name.form-control(type='text' placeholder='Name' name='name' required='true' value=(undefined===product ? '' : product.name) )
+            label(for='description') Description:
+            input#description.form-control(type='text' placeholder='A small description.' name='description' required='true' value=(undefined===product ? '' : product.description))
+            if !updating
+                div.form-group
+                    label Select seller:
+                    div.form-group
+                        select(id="seller", name="seller")
+                            for user in users
+                                option(value=user._id) #{user.name}
+            else
+                br
+                p #[strong Seller:] #{product.seller.name} (This field can't be changed.)
+
+            label(for='start_price') Start price:
+            input#start_price.form-control(type='float' name='start_price' placeholder='start price' required='true' value=(undefined===product ? '' : product.start_price) )
+
+        if updating
+            a.btn.btn-primary(onclick='update("product", \'' + product._id + '\')')  Submit
+        else
+            button.btn.btn-primary(type='submit') Submit
+    if errors
+        div.form-group
+            for error in errors
+                p(class="alert") #{error.msg}
+    div(id="error")

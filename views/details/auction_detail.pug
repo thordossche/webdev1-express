@@ -1,0 +1,44 @@
+extends ../layout
+
+block content
+    h3 #{auction.name}
+    p #[strong Organisers: ]
+        for org, index in auction.organisers
+            a(href=org.url) #{org.name}
+            if index < auction.organisers.length - 1
+                | ,
+                |  
+
+    p #[strong Place:] #{auction.place}
+    p #[strong Start - End:] #{auction.running_time}
+    p #[strong Product deadline: ] #{moment(auction.product_deadline).format('MMMM Do, YYYY')}
+    p #[strong Bid deadline: ] #{moment(auction.bid_deadline).format('MMMM Do, YYYY')}
+    hr
+    p #[strong Important: ] When the end of the auction or a deadline is reached, there will be no more changes allowed to the related subjects!
+    hr
+    p #[strong Products:]
+        each product in auction.products
+            if product.accepted
+                li
+                    a(href=product.url) #{product.name}
+
+    p #[strong Products awaiting approval by organisers:]
+        if !product_deadline_ended
+            each product in auction.products
+                if !product.accepted
+                    li
+                        a(href=product.url) #{product.name}
+            br
+            |
+            hr
+            a.btn.btn-primary(href='/product/create/' + auction._id) Add product
+        else
+            p Product deadline has ended, products can no longer be added or approved.
+    hr
+    p
+        if !auction_ended
+            a.btn.btn-warning(href=auction.url + '/update') Update
+            =" "
+        else
+            p(class='alert') This auction has ended.
+        a.btn.btn-danger(onclick = "deleteResource('auction', '"+ auction._id+"')") Delete

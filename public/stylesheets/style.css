@@ -1,0 +1,35 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+nav ul{height:200px; width:18%;}
+
+.scrollable {
+  overflow-y:scroll;
+  overflow-x:visible;
+  height:40%;
+  width:110%;
+}
+
+.alert {
+  padding: 15px;
+  background-color: rgba(244, 67, 54, 0.6);
+  color: white;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.menu {
+  padding: 15px;
+  background-color: rgba(217, 210, 210, 0.3);
+  color: black;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  width: 70%;
+  font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
